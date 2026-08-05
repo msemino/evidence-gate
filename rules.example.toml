@@ -1,0 +1,48 @@
+# evidence-gate — example ruleset.
+#
+# Copy to `rules.toml` and edit. `rules.toml` is gitignored on purpose: a denylist is a list
+# of the things you do not publish, so committing it publishes them.
+#
+# `remote` makes the repo be fetched fresh from origin on every run. A stale local clone
+# describes software that no longer exists, and raw.githubusercontent returns HTTP 200 for
+# branches that were never there — the remote is the only authority, and whichever branch it
+# hands back is the right one, so `main` vs `master` never has to be configured.
+
+[settings]
+# Threshold in bytes of source, not file count: one module that does the work is an
+# implementation; three stubs are not.
+min_source_bytes = 2000
+
+code_promise_phrases = ["view the code", "browse the source", "read the code"]
+
+[settings.severity]
+denylist       = "FAIL"
+path-claim     = "FAIL"
+test-claim     = "FAIL"
+code-promise   = "FAIL"
+measured-claim = "WARN"   # a nudge to cite, not a wall
+
+# --- Terms that must never reach a public surface -------------------------------------
+
+[[denylist]]
+pattern = "gaming\\s+GPU"
+reason  = "hardware framing: public surfaces say 'a single 24 GB NVIDIA GPU'"
+
+[[denylist]]
+pattern = "measured,\\s*not\\s*estimated"
+reason  = "this exact phrase once shipped on top of a test suite that did not exist"
+
+# Add your own: the employer you do not name publicly, the internal hostname, the vendor
+# under NDA, the model number that turns a platform into a hobby.
+
+# --- Targets ---------------------------------------------------------------------------
+
+[[targets]]
+name   = "my-project"
+remote = "https://github.com/you/my-project.git"
+pages  = [
+  # Local source, checked before it ships:
+  "landings/my-project/index.html",
+  # And/or the page actually being served, which is what a reader clicks:
+  # "https://my-project.example.com",
+]

@@ -1,0 +1,40 @@
+name: evidence-gate
+
+# Runs on the repository that holds the pages, not on this one. Copy this file there and
+# point `--rules` at your own ruleset.
+#
+# It is deliberately a required check rather than a nightly report: the incident this was
+# written for lasted nine days, and a report nobody opens would have lasted the same nine.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify-claims:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"   # tomllib is stdlib from 3.11
+
+      - name: Fetch the gate
+        run: git clone --depth 1 https://github.com/msemino/evidence-gate.git .evidence-gate
+
+      - name: Self-test the gate before trusting it
+        working-directory: .evidence-gate
+        run: python tests/test_gate.py
+
+      - name: Verify published claims
+        run: python .evidence-gate/evidence_gate.py --rules rules.toml --json report.json
+
+      - name: Keep the report even when the gate fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-gate-report
+          path: report.json
+          if-no-files-found: ignore

@@ -1,0 +1,19 @@
+# Rules used ONLY by the test suite. Do not fold these into `rules.toml`: a fixture that
+# fails on purpose has no business living in the production configuration.
+
+[settings]
+min_source_bytes = 2000
+
+[[denylist]]
+pattern = "gaming\\s+GPU"
+reason  = "hardware framing: public surfaces say 'a single 24 GB NVIDIA GPU', not 'a gaming GPU'"
+
+[[targets]]
+name  = "fixture-red"
+repo  = "tests/fixtures/sample-repo"
+pages = ["tests/fixtures/lying-page.html"]
+
+[[targets]]
+name  = "fixture-green"
+repo  = "tests/fixtures/sample-repo"
+pages = ["tests/fixtures/honest-page.html"]

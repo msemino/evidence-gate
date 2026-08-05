@@ -1,0 +1,26 @@
+<!doctype html>
+<!--
+  The counter-case. Everything below is exactly what the rule wants written, and the gate
+  has to let it through in silence. A check only ever seen failing is no better than one
+  only ever seen passing: you still don't know it can tell the two apart.
+-->
+<html lang="en">
+<head><meta charset="utf-8"><title>Fixture - the honest page</title></head>
+<body>
+
+  <!-- The hardware, named the way a public surface should name it -->
+  <p>Inference runs on a single 24 GB NVIDIA GPU, on-prem.</p>
+
+  <!-- A file that does exist in the repo -->
+  <p>The entry point is <code>app.py</code>.</p>
+
+  <!-- A measured number, with its source alongside -->
+  <!-- source: runs/2026-08-04-rtx.json -->
+  <p>Measured throughput: 10.5 tok/s.</p>
+
+  <!-- Declaring the ceiling out loud is not a claim that needs backing -->
+  <p>There is no coverage measurement and no security suite here, so this page will not
+     quote you one.</p>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<!--
+  Test fixture. It exists so the gate can be seen failing.
+  An alarm that has never been watched go off is not an alarm, it is decoration.
+  Every block below reproduces a mistake this portfolio actually made.
+-->
+<html lang="en">
+<head><meta charset="utf-8"><title>Fixture - the page that lies</title></head>
+<body>
+
+  <!-- 1. denylist: this exact phrasing leaked into public READMEs on 2026-07-16, while the
+       CV and the landings said "a single 24 GB NVIDIA GPU". A rule enforced on the most
+       visible surface only is a coat of paint, not a rule. -->
+  <p>Inference runs on a gaming GPU sitting in another room.</p>
+
+  <!-- 2. path-claim with a directory: unambiguous, must be a FAIL -->
+  <p>The robustness suite lives in <code>tests/test_robustness.py</code> and covers the retry path.</p>
+
+  <!-- 3. test-claim: the kind of test name that was published in 6 repos without existing in any -->
+  <p>See <code>test_retries_on_upstream_timeout</code> for the failure mode.</p>
+
+  <!-- 4. measured-claim, affirmative and unsourced -->
+  <p>Measured 2026-07-07: 94% coverage and a p95 latency of 210 ms.</p>
+
+  <!-- 5. code-promise against a repo that publishes the design, not the implementation -->
+  <p><a href="https://example.invalid/repo">View the code</a></p>
+
+  <hr>
+
+  <!-- What must NOT trip. If any of these shows up in the report, the gate is punishing
+       exactly the honest writing the rule is meant to reward, and it needs fixing. -->
+
+  <!-- a claim in the negative: the page declares it did not measure -->
+  <p>There is no coverage measurement and no load benchmark in this repository, so this page
+     will not quote you one.</p>
+
+  <!-- a measured claim WITH its source declared -->
+  <!-- source: runs/2026-08-04-rtx.json -->
+  <p>Measured throughput: 10.5 tok/s.</p>
+
+</body>
+</html>

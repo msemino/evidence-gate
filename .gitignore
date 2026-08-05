@@ -1,0 +1,12 @@
+# The real ruleset stays private. A denylist names the things you do not publish, so
+# publishing the denylist publishes them. Ship `rules.example.toml`, keep `rules.toml`.
+rules.toml
+
+.cache/
+report.json
+informe.json
+
+__pycache__/
+*.pyc
+.venv/
+venv/
