@@ -88,8 +88,15 @@ python evidence_gate.py --rules rules.toml --only my-project --json report.json
 python evidence_gate.py --page landing/index.html --repo ../my-repo
 ```
 
-Exit code is `1` if anything reached FAIL, so it drops into CI unchanged. A workflow is in
-`.github/workflows/evidence-gate.yml`.
+Exit code is `1` if anything reached FAIL, so it drops into CI unchanged. Copy
+`templates/evidence-gate.yml` into the repository that holds your pages — that is where the gate
+belongs, because that is where a page can start claiming something.
+
+It lives in `templates/` rather than in this repository's own `.github/workflows/` for a reason
+worth naming: it needs a `rules.toml`, and `rules.toml` is gitignored here. Left as an active
+workflow it failed on every push — a permanently red check on the project whose entire argument is
+that a green check should mean something. This repository's own CI (`.github/workflows/ci.yml`)
+runs the fixture suite instead, which is the part that can actually be verified here.
 
 `rules.toml` is gitignored. A denylist is a list of the things you do not publish, so committing
 it publishes them.

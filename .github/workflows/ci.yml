@@ -1,0 +1,33 @@
+name: ci
+
+# This repository's own CI. It runs the gate against its two fixtures — the red one must trip
+# all five checks and exit 1, the green one must pass in silence — which is the only evidence
+# that the gate can tell a lie from an honest page rather than biting everything.
+#
+# The workflow you copy into the repository that holds your pages is `templates/evidence-gate.yml`.
+# It is deliberately not here: it needs a `rules.toml`, and `rules.toml` is gitignored on purpose
+# (a denylist names the things you do not publish, so committing it publishes them).
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]   # tomllib is stdlib from 3.11
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Self-test the gate in both directions
+        run: python tests/test_gate.py
+
+      - name: The example ruleset must parse
+        run: python -c "import tomllib,pathlib; tomllib.loads(pathlib.Path('rules.example.toml').read_text(encoding='utf-8')); print('rules.example.toml parses')"
