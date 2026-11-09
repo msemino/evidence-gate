@@ -30,7 +30,7 @@ reason  = "hardware framing: public surfaces say 'a single 24 GB NVIDIA GPU'"
 
 [[denylist]]
 pattern = "measured,\\s*not\\s*estimated"
-reason  = "this exact phrase once shipped on top of a test suite that did not exist"
+reason  = "the phrase a model adds beside a figure nobody measured"
 
 # Add your own: the employer you do not name publicly, the internal hostname, the vendor
 # under NDA, the model number that turns a platform into a hobby.
