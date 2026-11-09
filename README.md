@@ -12,30 +12,26 @@ python evidence_gate.py --rules rules.toml
 
 ## Why this exists
 
-On 2026-07-16 I audited my own portfolio and found that **seven of its landing pages described
-test suites that do not exist**. The same invented `tests/test_robustness.py` appeared in six
-repositories. All seven carried the same date — *"Measured 2026-07-07"* — with coverage figures and
-latencies nobody had ever run. One page went as far as *"measured, not estimated."*
+When a language model writes documentation, the sentences that go wrong are not the vague
+ones. They are the **confident, checkable** ones, and they read exactly like the true
+sentences around them:
 
-They had been live for **nine days**. During those nine days my CV and a cover letter linked to
-those exact pages, explicitly inviting the reader to go and audit them.
-
-The pages were generated in a batch from a template and nobody checked them line by line.
-
-Three more things surfaced the same afternoon:
-
-- **Three landings had a "View the code" button** pointing at repositories that publish only a
-  `LICENSE` and a `README`. An architecture write-up is real work and sells as such — what breaks
-  trust is letting a reader infer an implementation, then losing them on the next click.
-- **A hardware detail leaked into seven public READMEs** while the CV and the landings used the
-  careful phrasing. The rule existed. It was being enforced on two of the three surfaces. *A rule
-  applied only where people look is a coat of paint, not a rule.*
-- **A local clone was stale**, so documenting from it described software that no longer existed.
+- **A test suite nobody wrote.** A test file name, a coverage figure and a latency, written
+  with the same fluency as everything else — sometimes with *"measured, not estimated"*
+  beside them. Pages built from one template carry the same invented file all at once.
+- **A "View the code" button** over a repository that publishes only a `LICENSE` and a
+  `README`. An architecture write-up is real work and sells as such — what breaks trust is
+  letting a reader infer an implementation, then losing them on the next click.
+- **A detail that must stay private**, kept out of the landing page and the CV, surviving
+  in a README or a code comment. *A rule applied only where people look is a coat of paint,
+  not a rule.*
+- **A stale local clone.** Documenting from it describes software that no longer exists.
   And `raw.githubusercontent.com` cheerfully returns HTTP 200 for branches that never existed.
 
-The fix that day was manual. This is the part that shouldn't be.
+"No source in the repository, it does not get written" is a good rule, and on its own it
+fails: enforcing it depends on a person reading every line of every page, every time.
 
-**The rule was already written down. Writing it down is what failed.**
+**Writing the rule down is not enough. This makes the build enforce it.**
 
 ---
 
@@ -69,9 +65,8 @@ To mark a number as sourced, put the source next to it:
 
 ## It verifies against the remote, not your disk
 
-Every target is fetched fresh from `origin` before checking. That is not caution, it is the second
-half of the same incident: the clone on disk was behind, and a page validated against it would have
-passed while lying. Whichever branch the remote hands back is the one that counts, so `main` versus
+Every target is fetched fresh from `origin` before checking. That is not caution: a clone on disk
+that is behind validates a page while it lies. Whichever branch the remote hands back is the one that counts, so `main` versus
 `master` never has to be configured.
 
 Pages can be local files (checked before they ship) or URLs (checked as actually served — what a
@@ -109,7 +104,7 @@ it publishes them.
 python tests/test_gate.py
 ```
 
-Two fixtures. The red one reproduces each real mistake and must trip all five checks and exit `1`.
+Two fixtures. The red one reproduces each failure mode and must trip all five checks and exit `1`.
 The green one is the honest version of the same page — correct hardware phrasing, a file that
 exists, a sourced number, a ceiling declared out loud — and must pass in silence.
 

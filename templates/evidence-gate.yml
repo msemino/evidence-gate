@@ -3,8 +3,8 @@ name: evidence-gate
 # Runs on the repository that holds the pages, not on this one. Copy this file there and
 # point `--rules` at your own ruleset.
 #
-# It is deliberately a required check rather than a nightly report: the incident this was
-# written for lasted nine days, and a report nobody opens would have lasted the same nine.
+# It is deliberately a required check rather than a nightly report: a report nobody opens
+# lets a false claim stay published for as long as nobody opens it.
 
 on:
   push:
